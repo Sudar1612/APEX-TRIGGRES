@@ -1,0 +1,18 @@
+public class oppHelperClass {
+    public static void updateStatus(List<Custom_Project__c> cusList){
+        //list of opportunities that are to be updated
+        List<Opportunity> updatedOpp =new List<Opportunity>();
+
+        for(Custom_Project__c cus:cusList){
+            //checking if the status is active
+            if(cus.Status__c=='Active'){
+                Opportunity opp=new Opportunity();
+                opp.Id=cus.Opportunity__c;
+                opp.Active_Customer_Project__c=True;
+                updatedOpp.add(opp);
+            }
+        }
+        if(!updatedOpp.isEmpty()){
+            update updatedOpp;
+        }      
+        
