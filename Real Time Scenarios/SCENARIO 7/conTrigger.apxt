@@ -1,0 +1,16 @@
+//Create the field called the “Contact Relationship” checkbox on the Contact Object and 
+//Create the related object called “Contact Relationship” which is a related list to the Contacts.(Look Up Relationship). 
+//Now logic is when we create contact by checking the Contact Relationship checkbox,
+//then Contact Relationship will be created automatically for that contact.
+
+trigger conTrigger on Contact (after insert,after update) {
+    if(trigger.isafter){
+        if(trigger.isinsert){
+            conHelperClass.createConRelation(Trigger.new);
+        }
+        if(trigger.isupdate){
+            conHelperClass.createConRelation(Trigger.new);
+        }
+    }
+
+}
