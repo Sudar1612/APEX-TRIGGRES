@@ -1,1 +1,18 @@
+//When a new contact is created for an existing account then set contact otherphone as account phone.
 
+
+public class Scenario4 {
+    public void scene4(List<Contact> conList){
+        List<Account> acct;
+        for(Contact c:conList){
+            if(c.OtherPhone!=null)
+                break;
+            else{
+                acct=[Select Id,Phone from Account where Id =: c.AccountId];
+                for(Account a1:acct){
+                    c.OtherPhone=a1.Phone;
+                }
+            }
+        } 
+     }
+}
