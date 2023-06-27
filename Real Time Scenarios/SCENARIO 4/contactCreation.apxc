@@ -1,0 +1,27 @@
+//Create a Custom field called “Number of Locations” on the Account Object (Data Type=Number).
+
+//The following trigger creates the number of contacts that are equal to the number 
+//which we will enter in the Number of Locations field on the Account Object
+
+public static void contactCreation(List<Account> accList){
+        //list to store the new that are created
+        List<Contact> newCon=new List<Contact>();
+        for(Account acc:accList){
+            //checking if the number of locations is not null
+            if(acc.NumberofLocations__c!=null){
+                //creating new contact records
+                for(integer i=0;i<acc.NumberofLocations__c;i++){
+                    Contact con=new Contact();
+                    //populating the required field Last Name
+                    con.LastName='Last Name'+i;
+                    //linking account with the contact
+                    con.AccountId=acc.Id;
+                    newCon.add(con);
+             }
+            }
+        }
+        //if the list is not empty then inserting the records
+        if(!newCon.isEmpty()){
+            insert newCon;
+        }
+    
