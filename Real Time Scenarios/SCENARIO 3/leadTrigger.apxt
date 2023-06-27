@@ -1,0 +1,10 @@
+trigger leadTrigger on Lead (before insert,before update) {
+    if(trigger.isbefore){
+        if(trigger.isinsert){
+            leadHelperClass.addPrefix(trigger.new);
+        }
+        if(trigger.isupdate){
+            leadHelperClass.addPrefix(trigger.new);
+        }
+    }
+}
