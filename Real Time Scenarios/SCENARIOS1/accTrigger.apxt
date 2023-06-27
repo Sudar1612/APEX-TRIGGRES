@@ -1,0 +1,14 @@
+Question : The following Trigger will fires when we try to create the account with the same name
+i.e. Preventing the users to create Duplicate Accounts.
+
+trigger accTrigger on Account (before insert,before update) {
+    if(trigger.isbefore){
+        if(trigger.isinsert){
+            accHelperClass.preventDuplicates(trigger.new);
+        }
+        if(trigger.isupdate){
+            accHelperClass.preventDuplicates(trigger.new);
+        }
+    }
+
+}
