@@ -1,0 +1,51 @@
+//Write a trigger, only admin can delete closed opportunities and email should be sent to owners for closed won opportunities.
+
+public class Scenario7 {
+    public void scene7(List<Opportunity> opp_list){
+      //identify whether the current profile is Admin or not
+    Id currId=UserInfo.getProfileId();
+    String profile=[Select Name from Profile where Id=:currId].Name;
+    
+    //find if it is Admin and he is tryign to delete
+    if(profile=='System Adminstrator' && Trigger.isDelete){
+        
+       //collect the ids where the stage is closed and closed won
+        Set<Id> closedOpp=new set<Id>();
+        List<Opportunity> closedWon = new List<Opportunity>();
+        for(Opportunity opp:opp_list){
+            if(opp.StageName.equals('Closed Won') || opp.StageName.equals('Closed Lost')){
+                closedOpp.add(opp.Id);
+                if(opp.StageName.equals('Closed Won')){
+                    closedWon.add(opp);
+                }
+             }
+        }
+        
+        // Collect the owner IDs of closed won opportunities
+        Set<Id> ownerIds=new set<Id>();
+        for (Opportunity opp : closedWon) {
+         ownerIds.add(opp.OwnerId);
+     }
+        
+         // Query the owners' email addresses
+      Map<Id, User> ownersMap = new Map<Id, User>([SELECT Id, Email FROM User WHERE Id IN :ownerIds]);
+
+        // Create and send the emails
+        List<Messaging.SingleEmailMessage> emailList = new List<Messaging.SingleEmailMessage>();
+     for (Opportunity opp : closedWon) {
+            User owner = ownersMap.get(opp.OwnerId);
+            if (owner != null && owner.Email != null) {
+                Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+                email.setToAddresses(new List<String>{owner.Email});
+                email.setSubject('Closed Won Opportunity');
+                email.setPlainTextBody('Hello, You have a closed won opportunity.');
+    
+                emailList.add(email);
+            }
+     }
+        if (!emailList.isEmpty()) {
+         Messaging.SendEmailResult[] sendResults = Messaging.sendEmail(emailList);
+     }
+ }
+    }
+}
