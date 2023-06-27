@@ -1,0 +1,12 @@
+//The following trigger updates the field called “Hello” by the value “World” whenever we are creating an account or updating an 
+account record. Create the field called “Hello” on the Account Object (Data Type = Text).
+
+public static void updateHello(List<Account> accList){
+        //loop through the new records or the records that are updated
+        for(Account acc:accList){
+            //checking if the field does not contain world as value
+            if(acc.Hello__c!='World'){
+                acc.Hello__c='World';
+            }
+        }
+    }
