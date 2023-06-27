@@ -1,0 +1,21 @@
+public class accHelperClass {
+    public static void preventDuplicates(List<Account> accList){
+        
+        //create a list of records that are alrady there
+        List<Account> oldList=[select Id,Name from Account];
+        Set<String> accSet=new Set<String>();
+        for(Account acc:oldList){
+            accSet.add(acc.Name);
+        }
+        
+        //loop through the new records that are to be inserted
+        for(Account acc:accList){
+            //check if the name already exsist in the database
+            if(accSet.contains(acc.Name)){
+                //if exists generate error
+                acc.Name.addError('Account already exist,cannot create duplicate records');
+            }
+        }
+    }
+
+}
