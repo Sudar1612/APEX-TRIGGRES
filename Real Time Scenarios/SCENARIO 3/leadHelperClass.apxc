@@ -1,0 +1,7 @@
+public class leadHelperClass {
+    public static void addPrefix(List<Lead> leadList){
+        for(Lead l:leadList){
+            l.Salutation='Dr.';
+        }  
+    }
+}
