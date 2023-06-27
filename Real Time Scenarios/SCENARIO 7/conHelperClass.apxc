@@ -1,0 +1,17 @@
+public class conHelperClass {
+    public static void createConRelation(List<Contact> conList){
+        List<Contact_Relationship__c> relList=new List<Contact_Relationship__c>();
+        for(Contact con:conList){
+            if(con.Contact_Relationship__c==True){
+                Contact_Relationship__c rel=new Contact_Relationship__c();
+                rel.Name=con.LastName;
+                rel.Contact__c=con.id;
+                relList.add(rel);
+            }
+        }
+        if(!relList.isEmpty()){
+            insert relList;
+        }
+    }
+
+}
